@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2018 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2018 Godot Engine contributors (cf. AUTHORS.md)    */
+/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,12 +30,14 @@
 
 #include "gdnative/basis.h"
 
-#include "core/math/matrix3.h"
+#include "core/math/basis.h"
 #include "core/variant.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+static_assert(sizeof(godot_basis) == sizeof(Basis), "Basis size mismatch");
 
 void GDAPI godot_basis_new_with_rows(godot_basis *r_dest, const godot_vector3 *p_x_axis, const godot_vector3 *p_y_axis, const godot_vector3 *p_z_axis) {
 	const Vector3 *x_axis = (const Vector3 *)p_x_axis;
@@ -279,6 +281,15 @@ godot_basis GDAPI godot_basis_operator_multiply_scalar(const godot_basis *p_self
 	Basis *dest = (Basis *)&raw_dest;
 	const Basis *self = (const Basis *)p_self;
 	*dest = *self * p_b;
+	return raw_dest;
+}
+
+godot_basis GDAPI godot_basis_slerp(const godot_basis *p_self, const godot_basis *p_b, const godot_real p_t) {
+	godot_basis raw_dest;
+	Basis *dest = (Basis *)&raw_dest;
+	const Basis *self = (const Basis *)p_self;
+	const Basis *b = (const Basis *)p_b;
+	*dest = self->slerp(*b, p_t);
 	return raw_dest;
 }
 

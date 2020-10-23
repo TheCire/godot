@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2018 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2018 Godot Engine contributors (cf. AUTHORS.md)    */
+/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -33,10 +33,9 @@
 #ifndef ICLOUD_H
 #define ICLOUD_H
 
-#include "core/object.h"
+#include "core/class_db.h"
 
 class ICloud : public Object {
-
 	GDCLASS(ICloud, Object);
 
 	static ICloud *instance;
@@ -45,9 +44,9 @@ class ICloud : public Object {
 	List<Variant> pending_events;
 
 public:
-	Error remove_key(Variant p_param);
-	Variant set_key_values(Variant p_param);
-	Variant get_key_value(Variant p_param);
+	Error remove_key(String p_param);
+	Array set_key_values(Dictionary p_params);
+	Variant get_key_value(String p_param);
 	Error synchronize_key_values();
 	Variant get_all_key_values();
 

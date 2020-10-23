@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2018 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2018 Godot Engine contributors (cf. AUTHORS.md)    */
+/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -33,10 +33,20 @@
 #ifndef IN_APP_STORE_H
 #define IN_APP_STORE_H
 
-#include "core/object.h"
+#include "core/class_db.h"
+
+#ifdef __OBJC__
+@class GodotProductsDelegate;
+@class GodotTransactionsObserver;
+
+typedef GodotProductsDelegate InAppStoreProductDelegate;
+typedef GodotTransactionsObserver InAppStoreTransactionObserver;
+#else
+typedef void InAppStoreProductDelegate;
+typedef void InAppStoreTransactionObserver;
+#endif
 
 class InAppStore : public Object {
-
 	GDCLASS(InAppStore, Object);
 
 	static InAppStore *instance;
@@ -44,10 +54,13 @@ class InAppStore : public Object {
 
 	List<Variant> pending_events;
 
+	InAppStoreProductDelegate *products_request_delegate;
+	InAppStoreTransactionObserver *transactions_observer;
+
 public:
-	Error request_product_info(Variant p_params);
+	Error request_product_info(Dictionary p_params);
 	Error restore_purchases();
-	Error purchase(Variant p_params);
+	Error purchase(Dictionary p_params);
 
 	int get_pending_event_count();
 	Variant pop_pending_event();

@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2018 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2018 Godot Engine contributors (cf. AUTHORS.md)    */
+/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -33,11 +33,14 @@
 
 template <class F, class S>
 struct Pair {
-
 	F first;
 	S second;
 
-	Pair() {}
+	Pair() :
+			first(),
+			second() {
+	}
+
 	Pair(F p_first, const S &p_second) :
 			first(p_first),
 			second(p_second) {
@@ -56,7 +59,6 @@ bool operator!=(const Pair<F, S> &pair, const Pair<F, S> &other) {
 
 template <class F, class S>
 struct PairSort {
-
 	bool operator()(const Pair<F, S> &A, const Pair<F, S> &B) const {
 		return A.first < B.first;
 	}
